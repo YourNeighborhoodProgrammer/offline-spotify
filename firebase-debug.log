@@ -1,0 +1,51 @@
+[debug] [2024-03-14T03:40:17.891Z] ----------------------------------------------------------------------
+[debug] [2024-03-14T03:40:17.892Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\sovan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2024-03-14T03:40:17.893Z] CLI Version:   13.4.0
+[debug] [2024-03-14T03:40:17.893Z] Platform:      win32
+[debug] [2024-03-14T03:40:17.893Z] Node Version:  v18.16.1
+[debug] [2024-03-14T03:40:17.893Z] Time:          Thu Mar 14 2024 10:40:17 GMT+0700 (Indochina Time)
+[debug] [2024-03-14T03:40:17.894Z] ----------------------------------------------------------------------
+[debug] 
+[info] Already logged in as sovannpanha359.seng@gmail.com
+[debug] [2024-03-14T03:40:27.943Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\sovan\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:258:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2024-03-14T03:41:00.741Z] ----------------------------------------------------------------------
+[debug] [2024-03-14T03:41:00.742Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\sovan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login --reauth
+[debug] [2024-03-14T03:41:00.742Z] CLI Version:   13.4.0
+[debug] [2024-03-14T03:41:00.743Z] Platform:      win32
+[debug] [2024-03-14T03:41:00.743Z] Node Version:  v18.16.1
+[debug] [2024-03-14T03:41:00.743Z] Time:          Thu Mar 14 2024 10:41:00 GMT+0700 (Indochina Time)
+[debug] [2024-03-14T03:41:00.743Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=86266760&redirect_uri=http%3A%2F%2Flocalhost%3A9005&login_hint=sovannpanha359.seng%40gmail.com
+[info] 
+[info] Waiting for authentication...
+[debug] [2024-03-14T03:41:08.163Z] >>> [apiv2][query] POST https://accounts.google.com/o/oauth2/token [none]
+[debug] [2024-03-14T03:41:08.163Z] >>> [apiv2][body] POST https://accounts.google.com/o/oauth2/token [omitted]
+[debug] [2024-03-14T03:41:19.256Z] *** [apiv2] error from fetch(https://accounts.google.com/o/oauth2/token, {"headers":{},"method":"POST","body":{"_overheadLength":543,"_valueLength":208,"_valuesToMeasure":[],"writable":false,"readable":true,"dataSize":0,"maxDataSize":2097152,"pauseStreams":true,"_released":true,"_streams":[],"_currentStream":null,"_insideLoop":false,"_pendingNext":false,"_boundary":"--------------------------154682859351619364694866","_events":{},"_eventsCount":1}}): FetchError: request to https://accounts.google.com/o/oauth2/token failed, reason: getaddrinfo ENOTFOUND accounts.google.com
+[debug] [2024-03-14T03:41:19.257Z] Token Fetch Error: FirebaseError: Failed to make request to https://accounts.google.com/o/oauth2/token
+    at RetryOperation._fn (C:\Users\sovan\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:246:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[debug] [2024-03-14T03:41:19.263Z] >>> [apiv2][query] POST https://auth.firebase.tools/attest [none]
+[debug] [2024-03-14T03:41:19.263Z] >>> [apiv2][body] POST https://auth.firebase.tools/attest {"session_id":"5729debc-8438-4cab-a58c-a051046898ba"}
+[debug] [2024-03-14T03:41:20.292Z] <<< [apiv2][status] POST https://auth.firebase.tools/attest 200
+[debug] [2024-03-14T03:41:20.292Z] <<< [apiv2][body] POST https://auth.firebase.tools/attest {"token":"KnSJLLymgbLlTt-Tmz5LskQaBoUfSxWJ-M338gDzxSs"}
+[info] 
+[info] To sign in to the Firebase CLI:
+[info] 
+[info] 1. Take note of your session ID:
+[info] 
+[info]    5729D
+[info] 
+[info] 2. Visit the URL below on any device and follow the instructions to get your code:
+[info] 
+[info]    https://auth.firebase.tools/login?code_challenge=GQENuSLR0UxdFyolcZ39b3CipUXDBibIRCtiFAZcBIU&session=5729debc-8438-4cab-a58c-a051046898ba&attest=KnSJLLymgbLlTt-Tmz5LskQaBoUfSxWJ-M338gDzxSs
+[info] 
+[info] 3. Paste or enter the authorization code below once you have it:
+[info] 

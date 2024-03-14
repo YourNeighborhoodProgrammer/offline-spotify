@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>music app</title>
+		<script src="tw.js"></script>
+		<script src="fa.js" crossorigin="anonymous"></script>
+	</head>
+	<body
+		onbeforeunload="save()"
+		onload="load()"
+		class="bg-zinc-950 text-white font-sans overflow-x-hidden p-2"
+	>
+		<div class="bg-zinc-900 h-[45.5rem] w-[33%] rounded-md p-2 fixed">
+			<h1 class="text-3xl font-medium">Not Spotify</h1>
+			<div class="h-8"></div>
+			<a
+				class="text-xl px-3 py-2 cursor-pointer hover:bg-zinc-800 flex rounded-md transition-colors delay-250 duration-300"
+				>Home</a
+			>
+			<a
+				class="text-xl px-3 py-2 cursor-pointer hover:bg-zinc-800 flex rounded-md transition-colors delay-250 duration-300"
+				>Search</a
+			>
+		</div>
+
+		<div class="bg-zinc-900 float-end w-[66%] rounded-md h-[45.5rem] p-8">
+			<h1 class="p-4">Playlist</h1>
+			<h1 class="font-semibold text-5xl p-4">Playlist #1</h1>
+			<a onclick="play()" class="p-4"
+				><i
+					id="changed"
+					style="font-size: 300%"
+					class="fa-regular fa-circle-play"
+				></i
+			></a>
+		</div>
+		<div class="bg-zinc-950 w-full h-16 fixed bottom-0">
+			<div class="h-2"></div>
+			<div class="fixed"
+				><p id="fhw">World's Smallest Violin</p>
+				<p id="weh" class="text-gray-500 text-sm">AJR</p></div
+			>
+			<div class="justify-center flex space-x-6">
+				<a><i class="fa-solid fa-backward"></i></a>
+				<a onclick="play()"
+					><i
+						id="change"
+						class="fa-regular fa-circle-play"
+						style="font-size: x-large"
+					></i
+				></a>
+				<a onclick="ff()"><i class="fa-solid fa-forward"></i></a>
+			</div>
+
+			<div
+				id="progress-bar"
+				class="mt-2 ml-[25%] w-1/2 bg-zinc-900 h-[5px] rounded-xl cursor-pointer justify-items-center flex"
+			>
+				<span
+					id="timeC"
+					class="text-sm text-gray-500 translate-x-[-2rem] translate-y-[-7px]"
+					>0:00</span
+				>
+				<div class="progress bg-white h-full rounded-xl"></div>
+				<span
+					id="timeD"
+					class="fixed text-sm text-gray-500 translate-x-[44rem] translate-y-[-7px]"
+					>Not Available Yet</span
+				>
+			</div>
+
+			<div class="h-2"></div>
+		</div>
+		<audio
+			id="audio-player"
+			class="w-full"
+			src="/muzac/World's Smallest Violin.mp3"
+		>
+		</audio>
+	</body>
+
+	<script>
+		if ("serviceWorker" in navigator) {
+			window.addEventListener("load", () => {
+				navigator.serviceWorker.register("sw.js").then(
+					(registration) => {
+						console.log("Service Worker registration successful");
+					},
+					(err) => {
+						console.log("Registration failed");
+					}
+				);
+			});
+		}
+		let CPI = 1;
+		const audioPlayer = document.getElementById("audio-player");
+		audioPlayer.volume = 1;
+		const progressBar = document.getElementById("progress-bar");
+		const fg = document.getElementById("timeC");
+		const dr = document.getElementById("timeD");
+		const fe = document.getElementById("changed");
+		const ef = document.getElementById("change");
+		const skip = document.getElementById("skip");
+		const title = document.getElementById("fhw");
+		const aAJR = "AJR";
+
+		function save() {
+			const title = document.getElementById("fhw");
+			window.localStorage.setItem("adsrc", audioPlayer.src);
+			window.localStorage.setItem("cTIme", audioPlayer.currentTime);
+			window.localStorage.setItem("tit", title.textContent);
+
+			window.localStorage.setItem("art", listSongs[CPI]["artist"]);
+		}
+		function play() {
+			if (audioPlayer.paused) {
+				audioPlayer.play();
+				fe.classList = "fa-regular fa-circle-pause";
+				ef.classList = "fa-regular fa-circle-pause";
+				save();
+			} else {
+				audioPlayer.pause();
+				fe.classList = "fa-regular fa-circle-play";
+				ef.classList = "fa-regular fa-circle-play";
+				save();
+			}
+		}
+		// Update progress bar as the audio plays
+		audioPlayer.addEventListener("timeupdate", () => {
+			const currentTime = audioPlayer.currentTime;
+			const currentMinutes = Math.floor(currentTime / 60);
+			const currentSeconds = Math.floor(currentTime % 60);
+			fg.textContent = `${currentMinutes}:${
+				currentSeconds < 10 ? "0" : ""
+			}${currentSeconds}`;
+			const duration = audioPlayer.duration;
+			const progress = (currentTime / duration) * 100;
+			progressBar.querySelector(".progress").style.width = `${progress}%`;
+			save();
+		});
+
+		// Jump to a specific timestamp when clicking on the progress bar
+		progressBar.addEventListener("click", (event) => {
+			const progressBarWidth = progressBar.clientWidth;
+			const clickX = event.offsetX; // Use offsetX instead of clientX
+			const duration = audioPlayer.duration;
+			const newTime = (clickX / progressBarWidth) * duration;
+			audioPlayer.currentTime = newTime;
+			const currentTime = audioPlayer.currentTime;
+			const currentMinutes = Math.floor(currentTime / 60);
+			const currentSeconds = Math.floor(currentTime % 60);
+			fg.textContent = `${currentMinutes}:${
+				currentSeconds < 10 ? "0" : ""
+			}${currentSeconds}`;
+		});
+
+		const listSongs = [
+			{
+				tit: "World's Smallest Violin",
+				loc: "/muzac/World's Smallest Violin.mp3",
+				artist: aAJR,
+			},
+			{ tit: "OK Overture", loc: "/muzac/OK Overture.mp3", artist: aAJR },
+			{
+				tit: "I Ain't Worried",
+				loc: "/muzac/I Aint Worried.mp3",
+				artist: "One Republic",
+			},
+			{
+				tit: "Burn The House Down",
+				loc: "/muzac/Burn The House Down.mp3",
+				artist: aAJR,
+			},
+			{ tit: "I Won't", loc: "/muzac/I Won't.mp3", artist: aAJR },
+			{
+				tit: "3 O'Clock Things",
+				loc: "/muzac/3 O'Clock Things.mp3",
+				artist: aAJR,
+			},
+			{
+				tit: "Christmas in June",
+				loc: "/muzac/Christmas in June.mp3",
+				artist: aAJR,
+			},
+			{ tit: "Bang!", loc: "/muzac/BANG!.mp3", artist: aAJR },
+			{
+				tit: "I'm Gonna Kill Santa Claus",
+				loc: "/muzac/I'm Gonna Kill Santa Claus.mp3",
+				artist: "Danny Gonzalez",
+			},
+			{ tit: "Inertia", loc: "/muzac/Inertia.mp3", artist: aAJR },
+			{
+				tit: "Steve's going to London",
+				loc: "/muzac/Steve's Going To London.mp3",
+				artist: aAJR,
+			},
+			{
+				tit: "Touchy Feely Fooly",
+				loc: "/muzac/Touchy Feely Fool.mp3",
+				artist: aAJR,
+			},
+			{ tit: "Yes I'm A Mess", loc: "/muzac/Yes Im A Mess.mp3", artist: aAJR },
+			{ tit: "Maybe Man", loc: "/muzac/Maybe Man.mp3", artist: aAJR },
+			{ tit: "Bummerland", loc: "/muzac/Bummerland.mp3", artist: aAJR },
+			{ tit: "2085", loc: "/muzac/2085.mp3", artist: aAJR },
+			{
+				tit: "Ordinaryish People",
+				loc: "/muzac/Ordinaryish People.mp3",
+				artist: aAJR,
+			},
+			{ tit: "Way Less Sad", loc: "/muzac/Way Less Sad.mp3", artist: aAJR },
+			{
+				tit: "Cruel Summer",
+				loc: "/muzac/Cruel Summer.mp3",
+				artist: "Taylor Swift",
+			},
+		];
+
+		// const replay = document.getElementsByClassName("replay");
+		// replay.addEventListener("click", () => {
+		//   CPI = 0;
+		// });
+
+		const audioSrc = document.getElementById("audio-player");
+		const artistd = document.getElementById("weh");
+		audioSrc.addEventListener("ended", () => {
+			CPI++;
+			if (CPI < listSongs.length) {
+				audioSrc.src = listSongs[CPI]["loc"];
+				audioSrc.load();
+				artistd.textContent = listSongs[CPI]["artist"];
+				title.textContent = listSongs[CPI]["tit"];
+
+				audioSrc.play();
+			} else {
+				CPI = 0;
+				audioSrc.src = listSongs[CPI]["loc"];
+				audioSrc.load();
+				title.textContent = listSongs[CPI]["tit"];
+				artistd.textContent = listSongs[CPI]["artist"];
+				audioSrc.play();
+			}
+			save();
+		});
+		function ff() {
+			audioSrc.currentTime = audioSrc.duration;
+		}
+		document.addEventListener("keydown", function (event) {
+			if (event.key == " ") {
+				play();
+				save();
+			}
+			if (event.keyCode === 39) {
+				audioSrc.currentTime = audioSrc.duration;
+			}
+			if (event.keyCode === 37) {
+				CPI--;
+				audioSrc.src = listSongs[CPI]["loc"];
+				audioSrc.load();
+				title.textContent = listSongs[CPI]["tit"];
+				artistd.textContent = listSongs[CPI]["artist"];
+				audioSrc.play();
+				save();
+			}
+		});
+
+		function load() {
+			const title = document.getElementById("fhw");
+			audioPlayer.src = window.localStorage.getItem("adsrc");
+			audioPlayer.currentTime = window.localStorage.getItem("cTIme");
+			title.textContent = window.localStorage.getItem("tit");
+			artistd.textContent = window.localStorage.getItem("art");
+		}
+	</script>
+</html>
